@@ -2,213 +2,103 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Rakshu 💙</title>
-
+<title>Final Question 💙</title>
 <style>
-*{box-sizing:border-box}
-
+*{
+  box-sizing:border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
 body{
   margin:0;
   height:100vh;
-  overflow:hidden;
-  font-family:'Segoe UI',sans-serif;
-  background:radial-gradient(circle at top,#0f2027,#203a43,#2c5364);
   display:flex;
   justify-content:center;
   align-items:center;
-  color:#fff;
+  background: radial-gradient(circle at top, #1e3c72, #000);
+  overflow:hidden;
+  transition:background 1s ease;
 }
-
-.bg span{
-  position:absolute;
-  font-size:26px;
-  opacity:.4;
-  animation:float 12s linear infinite;
-}
-
-@keyframes float{
-  from{transform:translateY(110vh)}
-  to{transform:translateY(-10vh)}
-}
-
 .card{
-  background:rgba(255,255,255,.95);
-  color:#111;
-  padding:35px;
+  background:rgba(255,255,255,0.12);
+  backdrop-filter: blur(14px);
+  padding:40px;
   border-radius:20px;
-  width:90%;
-  max-width:420px;
   text-align:center;
-  box-shadow:0 25px 50px rgba(0,0,0,.4);
-  animation:fade .6s ease;
-  z-index:2;
+  color:#fff;
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  width:340px;
 }
-
-@keyframes fade{
-  from{opacity:0;transform:scale(.96)}
-  to{opacity:1;transform:scale(1)}
-}
-
-h1,h2{margin:10px 0}
-.muted{color:#555;font-size:14px}
-
-input{
-  padding:10px;
-  width:80%;
-  border-radius:8px;
-  border:1px solid #ccc;
-  margin-top:12px;
-}
-
+h1{margin-bottom:10px;}
 button{
-  padding:12px 24px;
-  margin:15px 10px;
-  border:none;
-  border-radius:30px;
+  padding:12px 22px;
   font-size:16px;
+  border:none;
+  border-radius:25px;
   cursor:pointer;
 }
-
-.yes{background:#1e90ff;color:white}
-.no{background:#ccc;position:absolute}
-
-.timer{
-  font-size:13px;
-  color:#666;
-  margin-bottom:10px;
+#yes{
+  background:#3b82f6;
+  color:#fff;
 }
-
-.punch{
-  animation:punch .15s infinite;
+#no{
+  position:absolute;
+  background:#444;
+  color:#fff;
 }
-
-@keyframes punch{
-  0%{transform:translate(0,0)}
-  25%{transform:translate(10px,-10px)}
-  50%{transform:translate(-10px,10px)}
-  75%{transform:translate(10px,10px)}
-  100%{transform:translate(-10px,-10px)}
+.heart, .kiss{
+  position:fixed;
+  font-size:28px;
+  animation: floatUp 3s linear forwards;
+}
+@keyframes floatUp{
+  from{transform:translateY(0); opacity:1;}
+  to{transform:translateY(-600px); opacity:0;}
 }
 </style>
 </head>
 
 <body>
-
-<!-- background icons -->
-<div class="bg">
-  <span style="left:10%">⚽</span>
-  <span style="left:25%">🚗</span>
-  <span style="left:50%">💙</span>
-  <span style="left:70%">⚽</span>
-  <span style="left:85%">🚗</span>
+<div class="card" id="card">
+  <h1>Hi rakshhhuuu 🫂</h1>
+  <p>Quick check before proceeding 😌</p>
+  <p><b>Which club do you truly support?</b></p>
+  <button id="yes" onclick="yes()">Real Madrid 🤍⚽</button>
 </div>
 
-<div class="card" id="card"></div>
+<button id="no">No 🙄</button>
 
 <script>
-let time = 10;
-let timerInt;
-
-const card = document.getElementById("card");
-
-welcome();
-
-function welcome(){
-  card.innerHTML = `
-    <h1>Hi rakshhhuuu 🫂</h1>
-    <p class="muted">Let’s check if you’re worthy 😏</p>
-    <button class="yes" onclick="mathQ()">Start</button>
-  `;
-}
-
-function startTimer(){
-  time = 10;
-  timerInt = setInterval(()=>{
-    time--;
-    document.getElementById("t").innerText = time;
-    if(time<=0){ clearInterval(timerInt); teaseWrong(); }
-  },1000);
-}
-
-function mathQ(){
-  card.innerHTML = `
-    <div class="timer">Time left: <span id="t">10</span>s</div>
-    <h2>56 ÷ 7 + 12 = ?</h2>
-    <input id="a" type="number" placeholder="Answer">
-    <br>
-    <button class="yes" onclick="checkMath()">Submit</button>
-  `;
-  startTimer();
-}
-
-function checkMath(){
-  clearInterval(timerInt);
-  if(+document.getElementById("a").value===20){
-    footballQ();
-  } else teaseWrong();
-}
-
-function footballQ(){
-  card.innerHTML = `
-    <h2>Very important question ⚽</h2>
-    <p class="muted">Which club owns your heart?</p>
-    <button class="yes" onclick="finalTease()">🤍 Real Madrid</button><br>
-    <button onclick="teaseWrong()">Barcelona</button><br>
-    <button onclick="teaseWrong()">Man United</button>
-  `;
-}
-
-function teaseWrong(){
-  card.classList.add("punch");
-  card.innerHTML = `
-    <h2>Wrong choice 😌</h2>
-    <p class="muted">Think again, Rakshu.</p>
-    <button class="yes" onclick="mathQ()">Retry</button>
-  `;
-  setTimeout(()=>card.classList.remove("punch"),400);
-}
-
-function finalTease(){
-  card.innerHTML = `
-    <p class="muted">You solved everything…</p>
-    <p class="muted">But Rakshu 😏</p>
-    <h2>You forgot to ask Saggi something.</h2>
-    <button class="yes" onclick="finalQ()">Continue</button>
-  `;
-}
-
-function finalQ(){
-  card.innerHTML = `
-    <h2>So here I am 💙</h2>
-    <h1>Will you be Saggi’s Valentine?</h1>
-    <button class="yes" onclick="yes()">YES 😍</button>
-    <button class="no" id="no">NO 😏</button>
-  `;
-  const no=document.getElementById("no");
-  moveNo(no);
-  no.addEventListener("mouseenter",()=>moveNo(no));
-  no.addEventListener("click",punch);
-}
+const noBtn = document.getElementById("no");
+moveNo(noBtn);
+noBtn.addEventListener("mouseenter", ()=>moveNo(noBtn));
 
 function moveNo(btn){
-  btn.style.left=Math.random()*(window.innerWidth-120)+"px";
-  btn.style.top=Math.random()*(window.innerHeight-60)+"px";
+  btn.style.left = Math.random()*(window.innerWidth-120)+"px";
+  btn.style.top = Math.random()*(window.innerHeight-60)+"px";
 }
 
 function yes(){
-  card.innerHTML = `
-    <h1>💋💋💋</h1>
-    <h2>YAYYY 💙</h2>
-    <p>Good choice, Rakshu 😏</p>
+  document.body.style.background = "radial-gradient(circle at top, #1e90ff, #000)";
+  document.getElementById("yes").disabled = true;
+  document.getElementById("card").innerHTML = `
+    <h1>Good choice, Rakshu 💋</h1>
+    <h2>You’re officially <b>Saggi’s Valentine</b> 🖤</h2>
+    <p>Real Madrid fans don’t really get a choice anyway 😌⚽</p>
   `;
+  for(let i=0;i<40;i++){
+    createEmoji();
+  }
 }
 
-function punch(){
-  document.body.classList.add("punch");
-  card.innerHTML="<h1>💥</h1><h2>Wrong answer</h2>";
+function createEmoji(){
+  const emoji = document.createElement("div");
+  emoji.className = Math.random()>0.5 ? "heart" : "kiss";
+  emoji.innerHTML = emoji.className==="heart" ? "💖" : "💋";
+  emoji.style.left = Math.random()*100+"vw";
+  emoji.style.bottom = "-40px";
+  document.body.appendChild(emoji);
+  setTimeout(()=>emoji.remove(),3000);
 }
 </script>
-
 </body>
 </html>
