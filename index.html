@@ -26,14 +26,8 @@
       z-index: 2;
       animation: pop 0.6s ease-out;
     }
-    h1 {
-      color: #ff4d6d;
-      margin-bottom: 1rem;
-    }
-    p {
-      font-size: 1.1rem;
-      margin-bottom: 2rem;
-    }
+    h1 { color: #ff4d6d; }
+    p { font-size: 1.1rem; margin-bottom: 2rem; }
     button {
       font-size: 1rem;
       padding: 0.8rem 1.5rem;
@@ -41,22 +35,15 @@
       border-radius: 30px;
       cursor: pointer;
       margin: 0.5rem;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      position: relative;
+      transition: transform 0.2s ease;
     }
-    .yes {
-      background: #ff4d6d;
-      color: white;
-    }
+    .yes { background: #ff4d6d; color: white; }
     .no {
       background: #ffd6dd;
       color: #444;
-      position: absolute;
+      position: fixed; /* KEY FIX */
     }
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    }
+
     @keyframes pop {
       from { transform: scale(0.8); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
@@ -74,6 +61,16 @@
       from { transform: translateY(0); opacity: 0.8; }
       to { transform: translateY(-110vh); opacity: 0; }
     }
+
+    /* punch animation */
+    @keyframes punch {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      50% { transform: translateX(10px); }
+      75% { transform: translateX(-10px); }
+      100% { transform: translateX(0); }
+    }
+    .punch { animation: punch 0.4s; }
   </style>
 </head>
 <body>
@@ -94,16 +91,26 @@
       `;
 
       const noBtn = document.getElementById('noBtn');
-      noBtn.addEventListener('mouseover', moveButton);
-      noBtn.addEventListener('click', moveButton);
+      moveButton(noBtn);
+      noBtn.addEventListener('mouseenter', () => moveButton(noBtn));
+      noBtn.addEventListener('click', () => {
+        punchScreen();
+        moveButton(noBtn);
+      });
     }
 
-    function moveButton(e) {
-      const btn = e.target;
-      const x = Math.random() * (window.innerWidth - btn.offsetWidth);
-      const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+    function moveButton(btn) {
+      const padding = 20;
+      const x = Math.random() * (window.innerWidth - btn.offsetWidth - padding);
+      const y = Math.random() * (window.innerHeight - btn.offsetHeight - padding);
       btn.style.left = x + 'px';
       btn.style.top = y + 'px';
+    }
+
+    function punchScreen() {
+      document.body.classList.add('punch');
+      setTimeout(() => document.body.classList.remove('punch'), 400);
+      alert('👊💥 OUCH! Wrong answer, Rakshan 😌');
     }
 
     function finalYes() {
@@ -115,7 +122,7 @@
       `;
     }
 
-    /* create floating hearts */
+    /* floating hearts */
     setInterval(() => {
       const heart = document.createElement('div');
       heart.className = 'heart';
