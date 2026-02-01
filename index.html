@@ -15,7 +15,6 @@
       background: linear-gradient(135deg, #ff9a9e, #fad0c4);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       text-align: center;
-      position: relative;
     }
     .card {
       background: white;
@@ -50,7 +49,7 @@
     }
     button:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
     .yes { background: #ff4d6d; color: white; }
-    .no { background: #ffd6dd; color: #444; position: fixed; cursor: pointer; }
+    .no { background: #ffd6dd; color: #444; position: fixed; }
     .muted { color: #777; font-size: 0.9rem; }
 
     @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -74,19 +73,6 @@
       100% { transform: translateX(0); }
     }
     .punch { animation: punch 0.4s; }
-
-    /* Confetti */
-    .confetti {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background-color: #ff4d6d;
-      top: 0;
-      z-index: 10;
-      opacity: 0.9;
-      pointer-events: none;
-      border-radius: 50%;
-    }
   </style>
 </head>
 <body>
@@ -96,10 +82,10 @@
     const nameHim = 'Rakshan';
     const nameYou = 'Bubs';
     const questions = [
-      { q: '23 + 47 = ?', a: 70 },
-      { q: '12 × 8 = ?', a: 96 },
-      { q: '144 ÷ 12 = ?', a: 12 },
-      { q: '81 − 37 = ?', a: 44 },
+      { q: '7 + 5 = ?', a: 12 },
+      { q: '9 × 3 = ?', a: 27 },
+      { q: '20 − 6 = ?', a: 14 },
+      { q: '16 ÷ 4 = ?', a: 4 },
     ];
     let step = 0;
 
@@ -154,7 +140,17 @@
         <button class="no" id="noBtn">NO 😳</button>
       `;
       const noBtn = document.getElementById('noBtn');
-      noBtn.addEventListener('click', () => { punchScreen(); });
+      moveButton(noBtn);
+      noBtn.addEventListener('mouseenter', () => moveButton(noBtn));
+      noBtn.addEventListener('click', () => { punchScreen(); moveButton(noBtn); });
+    }
+
+    function moveButton(btn) {
+      const pad = 20;
+      const x = Math.random() * (window.innerWidth - btn.offsetWidth - pad);
+      const y = Math.random() * (window.innerHeight - btn.offsetHeight - pad);
+      btn.style.left = x + 'px';
+      btn.style.top = y + 'px';
     }
 
     function punchScreen() {
@@ -169,7 +165,6 @@
         <p>${nameHim} & ${nameYou} FOREVER 💐</p>
         <p>BEST VALENTINE EVER ❤️</p>
       `;
-      launchConfetti();
     }
 
     function card() { return document.getElementById('card'); }
@@ -184,27 +179,6 @@
       document.body.appendChild(heart);
       setTimeout(() => heart.remove(), 8000);
     }, 400);
-
-    // Confetti
-    function launchConfetti() {
-      const colors = ['#ff4d6d', '#ffd6dd', '#ff9a9e', '#fcd1d1', '#ff85a2'];
-      for(let i=0; i<150; i++){
-        const conf = document.createElement('div');
-        conf.className = 'confetti';
-        conf.style.left = Math.random()*100 + 'vw';
-        conf.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
-        document.body.appendChild(conf);
-        let fall = 0;
-        const interval = setInterval(() => {
-          fall += Math.random()*5+2;
-          conf.style.top = fall + 'px';
-          if(fall > window.innerHeight){
-            conf.remove();
-            clearInterval(interval);
-          }
-        }, 20);
-      }
-    }
   </script>
 </body>
 </html>
