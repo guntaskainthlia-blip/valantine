@@ -82,10 +82,10 @@
     const nameHim = 'Rakshan';
     const nameYou = 'Bubs';
     const questions = [
-      { q: '7 + 5 = ?', a: 12 },
+      { q: '14 + 5 = ?', a: 19 },
       { q: '9 × 3 = ?', a: 27 },
       { q: '20 − 6 = ?', a: 14 },
-      { q: '16 ÷ 4 = ?', a: 4 },
+      { q: '100 ÷ 4 = ?', a: 25 },
     ];
     let step = 0;
 
@@ -133,16 +133,17 @@
       card().innerHTML = `
         <h1>${nameHim}… 💘</h1>
         <p>FINAL QUESTION (NO CALCULATORS ALLOWED 😉)</p>
-        <p class="muted">YOU SOLVED ALL THE MATH… BUT I FORGOT SOMETHING IMPORTANT 😳</p>
-        <p><strong>ASK ME TO BE YOUR VALENTINE — HERE I AM 💖</strong></p>
+        <p class="muted">YOU SOLVED ALL THE MATH… But u forgot to ask me to be ur valentine 😳</p>
+        <p><strong>SO  HERE I AM 💖</strong></p>
         <p><strong>WILL YOU BE ${nameYou}’S VALENTINE?</strong></p>
         <button class="yes" onclick="finalYes()">YES 💖</button>
         <button class="no" id="noBtn">NO 😳</button>
       `;
       const noBtn = document.getElementById('noBtn');
-      moveButton(noBtn);
-      noBtn.addEventListener('mouseenter', () => moveButton(noBtn));
-      noBtn.addEventListener('click', () => { punchScreen(); moveButton(noBtn); });
+
+noBtn.addEventListener('click', () => {
+  punchScreen(); // optional
+});
     }
 
     function moveButton(btn) {
