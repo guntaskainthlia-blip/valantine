@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>💖 A Question for Rakshan 💖</title>
+  <title>💖 Rakshan’s Challenge 💖</title>
   <style>
     body {
       margin: 0;
@@ -26,28 +26,33 @@
       z-index: 2;
       animation: pop 0.6s ease-out;
     }
-    h1 { color: #ff4d6d; }
-    p { font-size: 1.1rem; margin-bottom: 2rem; }
+    h1 { color: #ff4d6d; margin-bottom: 0.5rem; }
+    p { font-size: 1.1rem; margin-bottom: 1.2rem; }
+    .q { font-weight: 600; margin-bottom: 1rem; }
+    input {
+      padding: 0.6rem 0.8rem;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+      width: 120px;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
     button {
       font-size: 1rem;
       padding: 0.8rem 1.5rem;
       border: none;
       border-radius: 30px;
       cursor: pointer;
-      margin: 0.5rem;
-      transition: transform 0.2s ease;
+      margin: 0.4rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+    button:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
     .yes { background: #ff4d6d; color: white; }
-    .no {
-      background: #ffd6dd;
-      color: #444;
-      position: fixed; /* KEY FIX */
-    }
+    .no { background: #ffd6dd; color: #444; position: fixed; }
+    .muted { color: #777; font-size: 0.9rem; }
 
-    @keyframes pop {
-      from { transform: scale(0.8); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
+    @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
     /* Floating hearts */
     .heart {
@@ -57,12 +62,9 @@
       animation: floatUp 6s linear infinite;
       opacity: 0.7;
     }
-    @keyframes floatUp {
-      from { transform: translateY(0); opacity: 0.8; }
-      to { transform: translateY(-110vh); opacity: 0; }
-    }
+    @keyframes floatUp { from { transform: translateY(0); opacity: 0.8; } to { transform: translateY(-110vh); opacity: 0; } }
 
-    /* punch animation */
+    /* Punch animation */
     @keyframes punch {
       0% { transform: translateX(0); }
       25% { transform: translateX(-10px); }
@@ -74,35 +76,81 @@
   </style>
 </head>
 <body>
-  <div class="card" id="card">
-    <h1>Hey Rakshan 💕</h1>
-    <p>Bubs has a very important question…</p>
-    <button class="yes" onclick="nextStep()">Click me 😌</button>
-  </div>
+  <div class="card" id="card"></div>
 
   <script>
-    function nextStep() {
-      const card = document.getElementById('card');
-      card.innerHTML = `
-        <h1>Rakshan… 💘</h1>
-        <p>Will you be Bubs’ Valentine?</p>
+    // ===== FLOW DATA =====
+    const nameHim = 'Rakshan';
+    const nameYou = 'Bubs';
+    const questions = [
+      { q: '7 + 5 = ?', a: 12 },
+      { q: '9 × 3 = ?', a: 27 },
+      { q: '20 − 6 = ?', a: 14 },
+      { q: '16 ÷ 4 = ?', a: 4 },
+    ];
+    let step = 0;
+
+    // ===== INIT =====
+    showIntro();
+
+    function showIntro() {
+      card().innerHTML = `
+        <h1>Hey ${nameHim} 💕</h1>
+        <p>${nameYou} made a tiny challenge for you.</p>
+        <p class="muted">Pass it to unlock the final question 😌</p>
+        <button class="yes" onclick="showQuestion()">Start ➜</button>
+      `;
+    }
+
+    function showQuestion() {
+      const { q } = questions[step];
+      card().innerHTML = `
+        <h1>Quick Math 🧠</h1>
+        <div class="q">${q}</div>
+        <input id="ans" type="number" placeholder="answer" />
+        <br />
+        <button class="yes" onclick="checkAnswer()">Submit</button>
+        <p class="muted">Question ${step + 1} of ${questions.length}</p>
+      `;
+      document.getElementById('ans').focus();
+    }
+
+    function checkAnswer() {
+      const input = document.getElementById('ans');
+      const val = Number(input.value);
+      if (val === questions[step].a) {
+        step++;
+        if (step < questions.length) {
+          showQuestion();
+        } else {
+          showValentine();
+        }
+      } else {
+        alert('Oops 😅 try again');
+        input.focus();
+      }
+    }
+
+    function showValentine() {
+      card().innerHTML = `
+        <h1>${nameHim}… 💘</h1>
+        <p>Final question (no calculators allowed 😉)</p>
+        <p class="muted">You solved all the math… but I forgot something important 😳</p>
+        <p><strong>ASK ME TO BE YOUR VALENTINE — HERE I AM 💖</strong></p>
+        <p><strong>Will you be ${nameYou}’s Valentine?</strong></p>
         <button class="yes" onclick="finalYes()">YES 💖</button>
         <button class="no" id="noBtn">NO 😳</button>
       `;
-
       const noBtn = document.getElementById('noBtn');
       moveButton(noBtn);
       noBtn.addEventListener('mouseenter', () => moveButton(noBtn));
-      noBtn.addEventListener('click', () => {
-        punchScreen();
-        moveButton(noBtn);
-      });
+      noBtn.addEventListener('click', () => { punchScreen(); moveButton(noBtn); });
     }
 
     function moveButton(btn) {
-      const padding = 20;
-      const x = Math.random() * (window.innerWidth - btn.offsetWidth - padding);
-      const y = Math.random() * (window.innerHeight - btn.offsetHeight - padding);
+      const pad = 20;
+      const x = Math.random() * (window.innerWidth - btn.offsetWidth - pad);
+      const y = Math.random() * (window.innerHeight - btn.offsetHeight - pad);
       btn.style.left = x + 'px';
       btn.style.top = y + 'px';
     }
@@ -110,19 +158,20 @@
     function punchScreen() {
       document.body.classList.add('punch');
       setTimeout(() => document.body.classList.remove('punch'), 400);
-      alert('👊💥 OUCH! Wrong answer, Rakshan 😌');
+      alert('👊💥 Wrong answer, ${nameHim} 😌');
     }
 
     function finalYes() {
-      const card = document.getElementById('card');
-      card.innerHTML = `
+      card().innerHTML = `
         <h1>YAYYYY 💕🥰</h1>
-        <p>Rakshan & Bubs forever 💐</p>
+        <p>${nameHim} & ${nameYou} forever 💐</p>
         <p>Best Valentine ever ❤️</p>
       `;
     }
 
-    /* floating hearts */
+    function card() { return document.getElementById('card'); }
+
+    // Floating hearts
     setInterval(() => {
       const heart = document.createElement('div');
       heart.className = 'heart';
